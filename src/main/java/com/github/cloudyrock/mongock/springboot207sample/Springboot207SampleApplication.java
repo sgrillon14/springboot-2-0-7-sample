@@ -1,7 +1,6 @@
 package com.github.cloudyrock.mongock.springboot207sample;
 
-import com.github.cloudyrock.mongock.Mongock;
-import com.github.cloudyrock.mongock.MongockBuilder;
+import com.github.cloudyrock.mongock.*;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import org.springframework.boot.SpringApplication;
@@ -25,13 +24,11 @@ public class Springboot207SampleApplication {
     @Bean
     public Mongock mongock() {
         MongoClient mongoclient = new MongoClient(new MongoClientURI("mongodb://127.0.0.1:27017"));
-        Mongock mongock = new MongockBuilder(mongoclient,
-                "mongock_demo3",
+        return new SpringMongockBuilder(mongoclient,
+                "mongock_db_springboot_207",
                 "com.github.cloudyrock.mongock.springboot207sample.changesets")
                 .setLockQuickConfig()
                 .build();
-        mongock.execute();
-        return mongock;
     }
 
 }

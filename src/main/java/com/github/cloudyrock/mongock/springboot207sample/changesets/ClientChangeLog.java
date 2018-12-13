@@ -3,8 +3,8 @@ package com.github.cloudyrock.mongock.springboot207sample.changesets;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.springboot207sample.ClientDomain;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.time.LocalDateTime;
 
@@ -14,14 +14,15 @@ public class ClientChangeLog {
     private static final String COLLECTION_NAME = "clients";
 
 
-    @ChangeSet(id= "cs-1", order = "001", author = "mongock")
-    public void changeSet1(MongoDatabase mongoDatabase) {
-        mongoDatabase.getCollection(COLLECTION_NAME).insertOne(createMongoDocument(new ClientDomain("Gerorge " + LocalDateTime.now().toString(), "Orwell")));
+
+    @ChangeSet(id = "cs-2", order = "002", author = "mongock")
+    public void changeSet2(MongoTemplate template) {
+        template.insert(getClient(), COLLECTION_NAME);
     }
 
-    private Document createMongoDocument(ClientDomain clientDomain) {
-        return new Document()
-                .append("name", clientDomain.getName())
-                .append("surname", clientDomain.getSurname());
+
+    private ClientDomain getClient() {
+        return new ClientDomain("Gerorge-" + LocalDateTime.now().toString(), "Orwell");
     }
+
 }
